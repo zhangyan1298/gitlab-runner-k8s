@@ -1,4 +1,4 @@
 From gitlab/gitlab-runner:latest
-COPY run.sh /etc
+COPY run.sh .
 ENTRYPOINT ["run.sh"]
 
