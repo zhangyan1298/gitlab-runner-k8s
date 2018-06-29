@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gitlab-runner-dockeryanxiao
+  namespace: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: gitlab-runner
+  template:
+    metadata:
+      labels:
+        name: gitlab-runner
+    spec:
+      containers:
+      - args:
+        - run
+        image: dockeryanxiao/gitlab-runner-k8s #本项目的dockerfile 打包的docker镜像
+        imagePullPolicy: Always
+        env:
+        - name: CI_SERVER_URL
+          value: http://xxxx.vicp.io #GITLAB地址
+        - name: REGISTRATION_TOKEN 
+          value: bzkqQsGFEx33rLkaaaa #token runner注册页面的令牌
+        - name: RUNNER_EXECUTOR
+          value: kubernetes #执行者 or shell docker 
+        name: gitlab-runner
+        volumeMounts:
+        - mountPath: /etc/ssl/certs
+          name: cacerts
+          readOnly: true
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /etc/kubernetes/ssl/
+        name: cacerts
