@@ -13,6 +13,13 @@ spec:
       labels:
         name: gitlab-runner
     spec:
+      tolerations:
+       - effect: NoSchedule
+         key: name
+         operator: Equal
+         value: huang
+      nodeSelector:
+       class: node005
       containers:
       - args:
         - run
